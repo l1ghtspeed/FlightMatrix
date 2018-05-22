@@ -1,0 +1,22 @@
+{
+  "name": "flightmatrix",
+  "version": "1.0.0",
+  "description": "Wind River Innovation Day Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZGao28/FlightMatrix.git"
+  },
+  "author": "Zi Gao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZGao28/FlightMatrix/issues"
+  },
+  "homepage": "https://github.com/ZGao28/FlightMatrix#readme",
+  "dependencies": {
+    "node-rest-client": "^3.1.0"
+  }
+}

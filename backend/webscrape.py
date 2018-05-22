@@ -4,10 +4,6 @@ from contextlib import closing
 from bs4 import BeautifulSoup
 import SimpleHTTPServer
 import SocketServer
-from opensky_api import OpenSkyApi
-
-api = OpenSkyApi()
-s = 
 
 PORT_NUMBER = 8080
 
@@ -33,6 +29,8 @@ def is_good_response(resp):
 
 def parse_html(url):
     raw_data = get_html(url)
+    f = open("test.txt", 'w+')
+    f.write(raw_data)
     parsed_data = BeautifulSoup(raw_data, 'html.parser')
     for a in parsed_data.select('a'):
         if(identifyICAO24(a.text)):
@@ -47,6 +45,8 @@ def identifyICAO24(ident):
                 return True
         
     return False
-    
+
+
+
 
 parse_html('https://flightaware.com/live/aircrafttype/787')
