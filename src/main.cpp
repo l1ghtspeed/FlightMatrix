@@ -14,7 +14,7 @@ static void InterruptHandler(int signo) {
 }
 
 static void drawMap(Canvas *canvas) {
-
+	
 }
 
 int main(int argc, char *argv[]) {
@@ -26,5 +26,19 @@ int main(int argc, char *argv[]) {
 	defaults.parallel = 1;
 	defaults.show_refresh_rate_rate = true;
 	Canvas *canvas = rgb_matrix::CreateMatrixFromFlags(&argc, &argv, &defaults);
+	if (canvas == NULL) {
+		return 1;
+	}
+	
+	//exit when CTRL-C
+	signal(SIGTERM, InterruptHandler);
+	signal(SIGINT, InterruptHandler);
+
+	drawMap(canvas);
+	//clear and delete the canvas if interrupt is sent
+	canvas -> Clear();
+	delete canvas;
+
+	return 0;
 };
 
