@@ -57,7 +57,7 @@ static void drawTime(Canvas* canvas){
 	const char x = x_orig;
 	char y = y_orig;
 
-	char[6] time_arr;
+	char time_arr[6];
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
 
@@ -78,7 +78,7 @@ static void drawTime(Canvas* canvas){
 	// The regular text. Unless we already have filled the background with
 	// the outline font, we also fill the background here.
 	rgb_matrix::DrawText(canvas, font, x, y + font.baseline(),
-						color, outline_font ? NULL : &bg_color, line,
+						color, line,
 						letter_spacing);
 	y += font.height();
 
