@@ -19,8 +19,9 @@ var coordset = [];
 
 
 async function updateCoords(arr){
-    for(let i = 0; i < arr.length-2; i++){
+    for(let i = 0; i < arr.length-1; i++){
         let output = await gft(arr[i]);
+        
         coordset[i] = [JSON.stringify(output.GetFlightTrackResult.tracks[output.GetFlightTrackResult.tracks.length-1].longitude),
                 JSON.stringify(output.GetFlightTrackResult.tracks[output.GetFlightTrackResult.tracks.length-1].latitude)];
     }
@@ -41,11 +42,16 @@ async function updateCoords(arr){
 
 function gft(inp) {
     return new Promise((res, rej) => {
+        console.log(inp)
         client.methods.getFlightTrack({ parameters: { ident: inp } }, function (data, response) {
             res(data);
+        
         });
+    }).catch(err => {
+        console.log('Airplane has landed, refreshing in 5 mins');
     });
 }
+
 
     fs.readFile('./ids.txt', 'utf8', function (err,data) {
         if (err) {
@@ -64,6 +70,6 @@ setInterval(function(){
         var idArray = data.split('\n');
         updateCoords(idArray)
     }
-)}, 3000000);
+)}, 300000);
 
 
