@@ -102,12 +102,18 @@ static void addAirports(vector<matCoord> &airports){
 	mat.x = 14;mat.y = 11;airports.push_back(mat);
 	mat.x = 15;mat.y = 13;airports.push_back(mat);
 	mat.x = 18;mat.y = 11;airports.push_back(mat);
-	mat.x = 58;mat.y = 13;airports.push_back(mat);
-	mat.x = 12;mat.y = 13;airports.push_back(mat);
-	mat.x = 34;mat.y = 9;airports.push_back(mat);
+	mat.x = 32;mat.y = 12;airports.push_back(mat);
+	mat.x = 33;mat.y = 15;airports.push_back(mat);
+	mat.x = 35;mat.y = 16;airports.push_back(mat);
 	mat.x = 16;mat.y = 13;airports.push_back(mat);
 	mat.x = 35;mat.y = 9;airports.push_back(mat);
-	mat.x = 54;mat.y = 15;airports.push_back(mat);
+	mat.x = 52;mat.y = 15;airports.push_back(mat);
+	mat.x = 50;mat.y = 18;airports.push_back(mat);
+	mat.x = 56;mat.y = 14;airports.push_back(mat);
+	mat.x = 37;mat.y = 14;airports.push_back(mat);
+	mat.x = 42;mat.y = 12;airports.push_back(mat);
+	mat.x = 56;mat.y = 21;airports.push_back(mat);
+	mat.x = 47;mat.y = 14;airports.push_back(mat);
 }
 
 int main(int argc, char *argv[]) {
