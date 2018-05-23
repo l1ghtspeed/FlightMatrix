@@ -3,10 +3,13 @@
 #include <ifstream>
 #include <iostream>
 #include <vector>
+#include <stdlib.h>
+#include <string>
+
+using namespace std;
 
 void getPlaneCoord(vector<matCoord> &planes) {
 	//latitude, longitude
-	
 	int mapWidth = 64;
 	int mapHeight = 32;
 	vector<geoCoord> latLong;
@@ -28,11 +31,19 @@ void getPlaneCoord(vector<matCoord> &planes) {
 
 void getCoords(vector<geoCoord> &latLong) {
 	ifstream in;
-
+	int space;
 	in.open("out.txt");
-	string component;
-	while (in << component) {
+	string plane;
 
+	while (in >> plane) {
+		geoCoord cord;
+		//delimit string by " "
+		space = plane.find(" ");
+		//convert strings to floats	
+		cord.lat = atof(plane.substr(0, space));
+		cord.lat = atof(plane.substr(space + 1));
+		latLong.push_back(cord);
 	}
+	
 	in.close();
 }
