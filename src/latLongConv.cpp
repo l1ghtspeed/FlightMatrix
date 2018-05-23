@@ -36,7 +36,7 @@ void getCoords(vector<geoCoord> &latLong) {
 	in.open("out.txt");
 	string plane;
 
-	while (in >> plane) {
+	while (getline(cin, planes) >> plane) {
 		geoCoord cord;
 		//delimit string by " "
 		space = plane.find(" ");
