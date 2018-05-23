@@ -22,24 +22,35 @@ static void InterruptHandler(int signo) {
 	interrupt_received = true;
 }
 
-static short findSaturation(int latitude){
-	tme.tm_hour
+static short findNoon(int latitude){
+	
+	short x = 0;
+	short add = 0;
+
+	for(int zone = 0; zone < (24-tme.tm_hour); zone++){
+		x += 2 + add;
+		add ^ 1;
+	}
+	x += 2;
+	x = x % 64;
+	return x;
+
 
 }
 
 static void drawMap(Canvas *canvas) {
-	short blue[3] = {0,0,180};
-	short green[3] = {0,250,0};
-
+	short bright = 255;
+	short blue[3] = {0,0,bright};
+	short green[3] = {0,bright,0};
+	short noon = findNoon();
 	for(int i = 0; i < 32; i++){
-	//	sat = findSaturation(i);
-	//	blue[2] = sat;
-	//	green[1] = sat;
-
 		for(int j = 0; j < 64; j++){
-               // sat = findSaturation(j);
-               // blue[2] = sat;
-               // green[1] = sat;
+			if((noon - 16)%64 <= j && (noon + 16)%64 >= j)bright = 255;
+			else bright = 155;
+			
+			blue[2] = bright;
+			green[1] = bright;
+
 			if(initMap[i][j] == 1){
 				canvas->SetPixel(j,i,green[0],green[1],green[2]);
 			}else{
@@ -81,7 +92,7 @@ static void drawTime(Canvas* canvas){
 
 	time_arr1[0] = (char) ((tme.tm_hour-4 < 0)?24-(tme.tm_hour-4):tme.tm_hour-4)/10 + 48;
 	time_arr1[1] = (char) ((tme.tm_hour-4 < 0)?24-(tme.tm_hour-4):tme.tm_hour-4)%10 + 48;
-	time_arr1[2] = ':';
+	time_arr1[2] = '\0';
 	time_arr2[0] = (char) tme.tm_min/10 + 48;
 	time_arr2[1] = (char) tme.tm_min%10 + 48;
 	time_arr2[2] = '\0';
