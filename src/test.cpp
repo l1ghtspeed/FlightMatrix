@@ -9,7 +9,7 @@ matCoord test(struct geoCoord geo);
 int main(int argc, char *argv[])
 {
 	geoCoord geo;
-	geo.lat = 120;
+	geo.lat = 30;
 	geo.lon = 50;
 	matCoord mat = test(geo);
 	cout << mat.x << " " << mat.y << endl;
