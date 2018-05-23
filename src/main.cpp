@@ -92,7 +92,7 @@ static void drawTime(Canvas* canvas){
 static void drawAirports(Canvas *canvas,vector<matCoord> &airports){
 	short numAirports = airports.size();
 	for(int i = 0; i < numAirports; i++){
-		canvas->SetPixel(airports.at(i).x,airports.at(i).y,0,0,0);
+		canvas->SetPixel(airports.at(i).x,airports.at(i).y,200,200,0);
 	}
 }
 
@@ -100,26 +100,14 @@ static void addAirports(vector<matCoord> &airports){
 	matCoord mat;
 	mat.x = 8;mat.y = 13;airports.push_back(mat);
 	mat.x = 14;mat.y = 11;airports.push_back(mat);
-	mat.x = 15;mat.y = 13;airports.push_back(mat);
-	mat.x = 18;mat.y = 11;airports.push_back(mat);
-	mat.x = 58;mat.y = 13;airports.push_back(mat);
+	mat.x = 55;mat.y = 13;airports.push_back(mat);
+	mat.x = 51;mat.y = 13;airports.push_back(mat);
 	mat.x = 12;mat.y = 13;airports.push_back(mat);
-	mat.x = 34;mat.y = 9;airports.push_back(mat);
-	mat.x = 16;mat.y = 13;airports.push_back(mat);
-	mat.x = 35;mat.y = 9;airports.push_back(mat);
-	mat.x = 54;mat.y = 15;airports.push_back(mat);
-	mat.x = 32;mat.y = 12;airports.push_back(mat);
-	mat.x = 33;mat.y = 15;airports.push_back(mat);
-	mat.x = 35;mat.y = 16;airports.push_back(mat);
-	mat.x = 16;mat.y = 13;airports.push_back(mat);
-	mat.x = 35;mat.y = 9;airports.push_back(mat);
-	mat.x = 52;mat.y = 15;airports.push_back(mat);
-	mat.x = 50;mat.y = 18;airports.push_back(mat);
-	mat.x = 56;mat.y = 14;airports.push_back(mat);
-	mat.x = 37;mat.y = 14;airports.push_back(mat);
-	mat.x = 42;mat.y = 12;airports.push_back(mat);
-	mat.x = 56;mat.y = 21;airports.push_back(mat);
-	mat.x = 47;mat.y = 14;airports.push_back(mat);
+	mat.x = 29;mat.y = 9;airports.push_back(mat);
+	mat.x = 31;mat.y = 10;airports.push_back(mat);
+	mat.x = 39;mat.y = 15;airports.push_back(mat);
+	mat.x = 44;mat.y = 15;airports.push_back(mat);
+	mat.x = 15;mat.y = 13;airports.push_back(mat);
 }
 
 int main(int argc, char *argv[]) {
@@ -140,7 +128,7 @@ int main(int argc, char *argv[]) {
 	//toggles when API call is made
 	ifstream in_file;
 	char toRefresh = 0;
-	char previousRefresh = 1;
+	char previousRefresh = 49;
 
 	//exit when CTRL-C
 	signal(SIGTERM, InterruptHandler);
@@ -155,9 +143,10 @@ int main(int argc, char *argv[]) {
 			previousRefresh = toRefresh;
 			drawMap(canvas);
 			drawTime(canvas);
-			//drawAirports(canvas,airports);
+			drawAirports(canvas,airports);
 			getPlaneCoord(planes);
 			drawPlanes(canvas, planes);
+			usleep(1000000000);
 		}
 		in_file.close();
 	}

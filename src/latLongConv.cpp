@@ -20,12 +20,15 @@ void getPlaneCoord(vector<matCoord> &planes) {
 	//pseduocode for conversion found at: https://stackoverflow.com/questions/14329691/convert-latitude-longitude-point-to-a-pixels-x-y-on-mercator-projection, by Michel Feldheim
 	for (int i = 0; i < latLong.size(); i++) {
 		matCoord out;
+		out.x = int((float)(latLong[i].lat + 180.0f) * ((float)mapWidth/360.0f));
+		out.y = int(((float)(latLong[i].lon * -1) + 90.0f) * ((float)mapHeight/180.0f));
+		out.y += 4;
 		//convert
-		out.x = int((latLong[i].lon + 180.0f)*((float)mapWidth/360));
-		float latRad = latLong[i].lat*3.14/180;
-		float temp = log(tan((3.14/4)+(latRad/2)));
-		out.y = int((mapHeight/2)-(mapWidth*temp/(2*3.14)));
-		out.y = out.y + 16;
+		//out.x = int((latLong[i].lon + 180.0f)*((float)mapWidth/360));
+		//float latRad = latLong[i].lat*3.14/180;
+		//float temp = log(tan((3.14/4)+(latRad/2)));
+		//out.y =  -1 * int((mapHeight/2)-(mapWidth*temp/(2*3.14)));
+		//out.y = out.y + 16;
 		//add processed coords to planes vector
 		planes.push_back(out);
 	}
