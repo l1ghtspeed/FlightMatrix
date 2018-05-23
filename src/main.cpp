@@ -23,19 +23,7 @@ static void InterruptHandler(int signo) {
 }
 
 static short findSaturation(int latitude){
-//183 to 255
-	int alaska;
-	short zone = latidue%4;
-
-	if(!(int)(tme.tm_hour/12)(alaska = 183 + (tme.tm_hour%12)*3);
-	else alaska = (255 - (tme.tm_hour%12)*3);
-
-	for(int i = 0; i < zone; i++){
-		if(alaska >= 255) alaska -= 16;
-		else alaska += 16;
-	}
-	
-	return (short)alaska;
+	tme.tm_hour
 
 }
 
@@ -95,10 +83,6 @@ static void drawTime(Canvas* canvas){
 	time_arr2[0] = (char) tme.tm_min/10 + 48;
 	time_arr2[1] = (char) tme.tm_min%10 + 48;
 	time_arr2[2] = '\0';
-	//time_arr[5] = '/0';
-
-	// The outline font, we need to write with a negative (-2) text-spacing,
-	// as we want to have the same letter pitch as the regular text that
 
 	rgb_matrix::DrawText(canvas, font, x, y + font.baseline(),color, &bg_color ,time_arr1,-1);
 	
@@ -167,6 +151,8 @@ int main(int argc, char *argv[]) {
 		drawMap(canvas);
 		drawTime(canvas);
 		getPlaneCoord(planes);
+		drawPlanes(canvas,planes);
+		planes.clear();
 		usleep(60000000);
 	}
 	
