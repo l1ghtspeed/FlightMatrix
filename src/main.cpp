@@ -52,7 +52,7 @@ static void drawTime(Canvas* canvas){
 	const char *bdf_font_file = "../fonts/4x6.bdf";
 	font.LoadFont(bdf_font_file);
 	rgb_matrix::Color bg_color(0, 0, 255);
-	rgb_matrix::Color color(255, 0, 0);
+	rgb_matrix::Color color(255, 255, 255);
 
 	char x_orig = 1;
 	char y_orig = 26;
@@ -98,9 +98,9 @@ static void drawAirports(Canvas *canvas,vector<matCoord> &airports){
 
 static void addAirports(vector<matCoord> &airports){
 	matCoord mat;
-	mat.x = 9;mat.y = 14;airports.push_back(mat);
-	mat.x = 54;mat.y = 12;airports.push_back(mat);
-	mat.x = 33;mat.y = 9;airports.push_back(mat);
+	mat.x = 8;mat.y = 13;airports.push_back(mat);
+	mat.x = 14;mat.y = 11;airports.push_back(mat);
+	mat.x = 15;mat.y = 13;airports.push_back(mat);
 	mat.x = 18;mat.y = 11;airports.push_back(mat);
 	mat.x = 58;mat.y = 13;airports.push_back(mat);
 	mat.x = 12;mat.y = 13;airports.push_back(mat);
@@ -110,30 +110,9 @@ static void addAirports(vector<matCoord> &airports){
 	mat.x = 54;mat.y = 15;airports.push_back(mat);
 }
 
-static void drawAirports(Canvas *canvas,vector<matCoord> &airports){
-	short numAirports = airports.size();
-	for(int i = 0; i < numAirports; i++){
-		canvas->SetPixel(airports.at(i).x,airports.at(i).y,0,0,0);
-	}
-}
-
-static void addAirports(vector<matCoord> &airports){
-	matCoord mat;
-	mat.x = 47;mat.y = 9;airports.push_back(mat);
-	mat.x = 52;mat.y = 8;airports.push_back(mat);
-	mat.x = 32;mat.y = 5;airports.push_back(mat);
-	mat.x = 47;mat.y = 7;airports.push_back(mat);
-	mat.x = 56;mat.y = 9;airports.push_back(mat);
-	mat.x = 53;mat.y = 9;airports.push_back(mat);
-	mat.x = 32;mat.y = 5;airports.push_back(mat);
-	mat.x = 49;mat.y = 9;airports.push_back(mat);
-	mat.x = 33;mat.y = 5;airports.push_back(mat);
-	mat.x = 52;mat.y = 11;airports.push_back(mat);
-}
-
 int main(int argc, char *argv[]) {
 	RGBMatrix::Options defaults;
-	vector<matCoord> airports;
+	vector<matCoord> airports, planes;
 	addAirports(airports);
 	defaults.hardware_mapping = "adafruit-hat";
 	defaults.rows = 32;
@@ -155,6 +134,8 @@ int main(int argc, char *argv[]) {
 		drawMap(canvas);
 		drawTime(canvas);
 		drawAirports(canvas,airports);
+		getPlaneCoord(planes);
+		drawPlanes(canvas, planes);
 		usleep(10000000);
 	}
 	
@@ -164,3 +145,4 @@ int main(int argc, char *argv[]) {
 
 	return 0;
 };
+
