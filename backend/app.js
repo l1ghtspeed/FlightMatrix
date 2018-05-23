@@ -47,6 +47,14 @@ function gft(inp) {
     });
 }
 
+    fs.readFile('./ids.txt', 'utf8', function (err,data) {
+        if (err) {
+        return console.log(err);
+        }
+        var idArray = data.split('\n');
+        updateCoords(idArray)
+    }
+);
 
 setInterval(function(){
     fs.readFile('./ids.txt', 'utf8', function (err,data) {
