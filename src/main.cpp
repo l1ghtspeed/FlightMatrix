@@ -39,9 +39,48 @@ static void drawPlanes(Canvas *canvas,std::vector<matCoord> planes){
 }
 
 static void drawTime(Canvas* canvas){
-	time_t rawtime;
-  	time (&rawtime);
-	
+
+	RGBMatrix::Options matrix_options;
+	rgb_matrix::RuntimeOptions runtime_opt;
+
+	const char *bdf_font_file = "../fonts/8x13.bdf";
+	font.LoadFont(bdf_font_file);
+
+	Color color(255, 255, 0);
+
+	char x_orig = 0;
+	char y_orig = 0;
+	char letter_spacing = 0;
+
+	rgb_matrix::Font font;
+
+	const char x = x_orig;
+	char y = y_orig;
+
+	char[6] time_arr;
+	time_t t = time(NULL);
+	struct tm tm = *localtime(&t);
+
+	time_arr[0] = (char) tm.tm_hour/10;
+	time_arr[1] = (char) tm.tm_hour%10;
+	time_arr[2] = ':';
+	time_arr[3] = (char) tm.tm_min/10;
+	time_arr[4] = (char) tm.tm_min%10;
+	time_arr[5] = '/0';
+
+	// The outline font, we need to write with a negative (-2) text-spacing,
+	// as we want to have the same letter pitch as the regular text that
+	// we then write on top.
+	// rgb_matrix::DrawText(canvas, *outline_font,
+	// 					x - 1, y + font.baseline(),
+	// 					outline_color, &bg_color, line, letter_spacing - 2);
+
+	// The regular text. Unless we already have filled the background with
+	// the outline font, we also fill the background here.
+	rgb_matrix::DrawText(canvas, font, x, y + font.baseline(),
+						color, outline_font ? NULL : &bg_color, line,
+						letter_spacing);
+	y += font.height();
 
 }
 
