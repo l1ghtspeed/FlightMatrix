@@ -7,6 +7,7 @@
 #include "graphics.h"
 #include <cassert>
 #include <unistd.h>
+#include <fstream>
 
 using namespace std;
 using rgb_matrix::GPIO;
@@ -80,7 +81,7 @@ static void drawTime(Canvas* canvas){
 
 	rgb_matrix::DrawText(canvas, font, x, y + font.baseline(),color, &bg_color ,time_arr1,-1);
 	
-	x += 6;
+	x += 3;
 	y += font.height();
 	
 	rgb_matrix::DrawText(canvas, font, x, y + font.baseline(),color, &bg_color ,time_arr2,-1);
@@ -97,7 +98,7 @@ static void drawAirports(Canvas *canvas,vector<matCoord> &airports){
 
 static void addAirports(vector<matCoord> &airports){
 	matCoord mat;
-	/*mat.x = 8;mat.y = 13;airports.push_back(mat);
+	mat.x = 8;mat.y = 13;airports.push_back(mat);
 	mat.x = 14;mat.y = 11;airports.push_back(mat);
 	mat.x = 15;mat.y = 13;airports.push_back(mat);
 	mat.x = 18;mat.y = 11;airports.push_back(mat);
@@ -118,7 +119,7 @@ static void addAirports(vector<matCoord> &airports){
 	mat.x = 37;mat.y = 14;airports.push_back(mat);
 	mat.x = 42;mat.y = 12;airports.push_back(mat);
 	mat.x = 56;mat.y = 21;airports.push_back(mat);
-	mat.x = 47;mat.y = 14;airports.push_back(mat);*/
+	mat.x = 47;mat.y = 14;airports.push_back(mat);
 }
 
 int main(int argc, char *argv[]) {
@@ -136,17 +137,29 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 	
+	//toggles when API call is made
+	ifstream in_file;
+	char toRefresh = 0;
+	char previousRefresh = 1;
+
 	//exit when CTRL-C
 	signal(SIGTERM, InterruptHandler);
 	signal(SIGINT, InterruptHandler);
 
 	while(!interrupt_received){
-		drawMap(canvas);
-		drawTime(canvas);
-		drawAirports(canvas,airports);
-		getPlaneCoord(planes);
-		drawPlanes(canvas, planes);
-		usleep(10000000);
+		in_file.open("refresh.txt");
+		in_file >> toRefresh;
+		toRefresh += 48;
+
+		if(toRefresh != previousRefresh){
+			previousRefresh = toRefresh;
+			drawMap(canvas);
+			drawTime(canvas);
+			//drawAirports(canvas,airports);
+			getPlaneCoord(planes);
+			drawPlanes(canvas, planes);
+		}
+		in_file.close();
 	}
 	
 	//clear and delete the canvas if interrupt is sent

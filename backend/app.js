@@ -1,5 +1,6 @@
 var Client = require('node-rest-client').Client;
 var fs = require('fs');
+var toggle = 0;
 
 
 var username = 'danthemanzspam';
@@ -52,6 +53,12 @@ async function updateCoords(arr){
         }
         console.log("The file was saved!");
     }); 
+    fs.writeFile("../src/refresh.txt", toggle.toString(), function(err) {
+        if(err) {
+            return console.log(err);
+        }
+    }); 
+    toggle ^ 1;
 }
 
 function sleep(ms) {
