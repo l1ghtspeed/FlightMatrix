@@ -2,10 +2,8 @@ from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
 from bs4 import BeautifulSoup
-import SimpleHTTPServer
-import SocketServer
 
-PORT_NUMBER = 8080
+
 
 def get_html(url):
 
@@ -29,20 +27,19 @@ def is_good_response(resp):
 
 def parse_html(url):
     raw_data = get_html(url)
-    f = open("test.txt", 'w+')
-    f.write(raw_data)
     parsed_data = BeautifulSoup(raw_data, 'html.parser')
+    f = open("ids.txt","w+")
     for a in parsed_data.select('a'):
-        if(identifyICAO24(a.text)):
-            print(a.text)
+        if(verify(a['href'])):
+            print(a['href'][16:len(a['href'])-4])
+            f.write(a['href'][16:len(a['href'])-4]+'\n')
+            
 
 
 
-def identifyICAO24(ident):
-    if (len(ident) > 3):
-        if (ident[0].isalpha() and ident[1].isalpha() and ident[2].isalpha()):
-            if (ident[3:].isnumeric() and len(ident[3:]) < 5):
-                return True
+def verify(ident):
+    if ('/live/flight/id' in ident and 'airline' in ident):
+        return True
         
     return False
 
