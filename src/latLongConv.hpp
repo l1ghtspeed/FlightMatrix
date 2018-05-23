@@ -52,4 +52,6 @@ const char initMap[32][64] =
 //Convert latitude and longitude to x,y coordinates (an R^2 -> R^2 mapping) for a 32 x 64 led matrix (Mercator projection)
 void getPlaneCoord(std::vector<matCoord> &planes);
 
+void getCoords(std::vector<geoCoord> &latLong);
+
 #endif

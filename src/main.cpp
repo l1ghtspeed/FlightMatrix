@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <vector>
+#include <unistd.h>
 
 using rgb_matrix::GPIO;
 using rgb_matrix::RGBMatrix;
@@ -53,8 +54,12 @@ int main(int argc, char *argv[]) {
 	//exit when CTRL-C
 	signal(SIGTERM, InterruptHandler);
 	signal(SIGINT, InterruptHandler);
+	std::vector<matCoord> planes;
 	while(!interrupt_received){
 	drawMap(canvas);
+	getPlaneCoord(planes);
+	drawPlanes(canvas, planes);
+	usleep(100000);
 	}
 	//clear and delete the canvas if interrupt is sent
 	canvas -> Clear();
