@@ -22,8 +22,22 @@ async function updateCoords(arr){
     for(let i = 0; i < arr.length-1; i++){
         let output = await gft(arr[i]);
         
-        coordset[i] = [JSON.stringify(output.GetFlightTrackResult.tracks[output.GetFlightTrackResult.tracks.length-1].longitude),
-                JSON.stringify(output.GetFlightTrackResult.tracks[output.GetFlightTrackResult.tracks.length-1].latitude)];
+        console.log(typeof output.GetFlightTrackResult);
+
+        if(typeof output.GetFlightTrackResult == 'undefined'){
+            //restriction due to five calls a minute
+            await sleep(65000);
+            let newOutput = await gft(arr[i]);
+            console.log('blarg');
+            console.log(typeof newOutput.GetFlightTrackResult);
+            if (typeof newOutput.GetFlightTrackResult != 'undefined'){
+                coordset[i] = [JSON.stringify(newOutput.GetFlightTrackResult.tracks[newOutput.GetFlightTrackResult.tracks.length-1].longitude),
+                        JSON.stringify(newOutput.GetFlightTrackResult.tracks[newOutput.GetFlightTrackResult.tracks.length-1].latitude)];
+            }
+        } else {
+            coordset[i] = [JSON.stringify(output.GetFlightTrackResult.tracks[output.GetFlightTrackResult.tracks.length-1].longitude),
+                    JSON.stringify(output.GetFlightTrackResult.tracks[output.GetFlightTrackResult.tracks.length-1].latitude)];
+        }
     }
 
     let final = "";
@@ -40,15 +54,17 @@ async function updateCoords(arr){
     }); 
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+  
+
 function gft(inp) {
     return new Promise((res, rej) => {
         console.log(inp)
         client.methods.getFlightTrack({ parameters: { ident: inp } }, function (data, response) {
             res(data);
-        
         });
-    }).catch(err => {
-        console.log('Airplane has landed, refreshing in 5 mins');
     });
 }
 
