@@ -3,4 +3,7 @@
 FILENAME=$1
 shift
 
-g++ $FILENAME -o ${FILENAME%%.cpp} -L/home/pi/rpi-rgb-led-matrix/lib -lrgbmatrix -lrt -lm -lpthread -I/home/pi/rpi-rgb-led-matrix/include $2
+echo $FILENAME
+echo ${FILENAME%%.cpp}
+
+g++ $FILENAME $@ -o ${FILENAME%%.cpp} -L/home/pi/rpi-rgb-led-matrix/lib -lrgbmatrix -lrt -lm -lpthread -I/home/pi/rpi-rgb-led-matrix/include
