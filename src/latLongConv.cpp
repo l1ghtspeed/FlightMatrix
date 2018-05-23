@@ -25,7 +25,7 @@ void getPlaneCoord(vector<matCoord> &planes) {
 		float latRad = latLong[i].lat*3.14/180;
 		float temp = log(tan((3.14/4)+(latRad/2)));
 		out.y = int((mapHeight/2)-(mapWidth*temp/(2*3.14)));
-		out.y = abs(out.y);
+		out.y = out.y + 16;
 		//add processed coords to planes vector
 		planes.push_back(out);
 	}
