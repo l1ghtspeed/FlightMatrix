@@ -7,12 +7,14 @@
 #include "graphics.h"
 #include <cassert>
 #include <unistd.h>
-#include <fstream>
 
 using namespace std;
 using rgb_matrix::GPIO;
 using rgb_matrix::RGBMatrix;
 using rgb_matrix::Canvas;
+
+time_t t = time(NULL);
+struct tm tme = *localtime(&t);
 
 //interrupt and interrupt handling setup
 volatile bool interrupt_received = false;
@@ -20,11 +22,33 @@ static void InterruptHandler(int signo) {
 	interrupt_received = true;
 }
 
+static short findSaturation(int latitude){
+//183 to 255
+	int alaska;
+	short zone = latidue%4;
+
+	if(!(int)(tme.tm_hour/12)(alaska = 183 + (tme.tm_hour%12)*3);
+	else alaska = (255 - (tme.tm_hour%12)*3);
+
+	for(int i = 0; i < zone; i++){
+		if(alaska >= 255) alaska -= 16;
+		else alaska += 16;
+	}
+	
+	return (short)alaska;
+
+}
+
 static void drawMap(Canvas *canvas) {
-	const short blue[3] = {0,0,180};
-	const short green[3] = {0,255,0};
+	short sat = 255;
+	short blue[3] = {0,0,sat};
+	short green[3] = {0,sat,0};
 
 	for(int i = 0; i < 32; i++){
+		sat = findSaturation();
+		blue[2] = sat;
+		green[1] = sat;
+
 		for(int j = 0; j < 64; j++){
 			if(initMap[i][j] == 1){
 				canvas->SetPixel(j,i,green[0],green[1],green[2]);
@@ -64,9 +88,6 @@ static void drawTime(Canvas* canvas){
 
 	char time_arr1[3];
 	char time_arr2[3];
-	
-	time_t t = time(NULL);
-	struct tm tme = *localtime(&t);
 
 	time_arr1[0] = (char) ((tme.tm_hour-4 < 0)?24-(tme.tm_hour-4):tme.tm_hour-4)/10 + 48;
 	time_arr1[1] = (char) ((tme.tm_hour-4 < 0)?24-(tme.tm_hour-4):tme.tm_hour-4)%10 + 48;
@@ -136,30 +157,17 @@ int main(int argc, char *argv[]) {
 	if (canvas == NULL) {
 		return 1;
 	}
-	
-	//toggles when API call is made
-	ifstream in_file;
-	char toRefresh = 0;
-	char previousRefresh = 1;
 
 	//exit when CTRL-C
 	signal(SIGTERM, InterruptHandler);
 	signal(SIGINT, InterruptHandler);
 
 	while(!interrupt_received){
-		in_file.open("refresh.txt");
-		in_file >> toRefresh;
-		toRefresh += 48;
-
-		if(toRefresh != previousRefresh){
-			previousRefresh = toRefresh;
-			drawMap(canvas);
-			drawTime(canvas);
-			//drawAirports(canvas,airports);
-			getPlaneCoord(planes);
-			drawPlanes(canvas, planes);
-		}
-		in_file.close();
+		previousRefresh = toRefresh;
+		drawMap(canvas);
+		drawTime(canvas);
+		getPlaneCoord(planes);
+		usleep(60000000);
 	}
 	
 	//clear and delete the canvas if interrupt is sent
