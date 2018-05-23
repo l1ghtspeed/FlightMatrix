@@ -2,7 +2,7 @@
 #include "led-matrix.h"
 #include <stdio.h>
 #include <signal.h>
-#include <vector>
+#include <unistd.h>
 
 using rgb_matrix::GPIO;
 using rgb_matrix::RGBMatrix;
@@ -15,26 +15,19 @@ static void InterruptHandler(int signo) {
 }
 
 static void drawMap(Canvas *canvas) {
-	const short blue[3] = {0,0,255};
-	const short green[3] = {0,255,0};
-
-	for(int i = 0; i < 32; i++){
-		for(int j = 0; j < 64; j++){
-			if(initMap[i][j] == 1){
-				canvas->SetPixel(j,i,green[0],green[1],green[2]);
-			}else{
-				canvas->SetPixel(j,i,blue[0],blue[1],blue[2]);
+	char color = 0;
+	while(true){
+		if(color == 0)
+			color = 100;
+		else
+			color = 0;
+		for(int x = 0; x < 64; x++){
+			for(int y = 0; y < 32; y++){
+				canvas->SetPixel(x, y, color, 0, 0);
+				usleep(1*1000);
 			}
-			
 		}
-	}
-}
-
-static void drawPlanes(Canvas *canvas,std::vector<matCoord> &planes){
-	short numPlanes = planes.size();
-	for(int i = 0; i < numPlanes; i++){
-		canvas->SetPixel(planes.at(i).x,planes.at(i).y,255,0,0);
-	}
+	}	
 }
 
 int main(int argc, char *argv[]) {
@@ -52,9 +45,8 @@ int main(int argc, char *argv[]) {
 	//exit when CTRL-C
 	signal(SIGTERM, InterruptHandler);
 	signal(SIGINT, InterruptHandler);
-	while(!interrupt_received){
+
 	drawMap(canvas);
-	}
 	//clear and delete the canvas if interrupt is sent
 	canvas -> Clear();
 	delete canvas;
