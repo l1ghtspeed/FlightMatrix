@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
 	defaults.cols = 64;
 	defaults.chain_length = 1;
 	defaults.parallel = 1;
+	defaults.brightness=50;
 	Canvas *canvas = rgb_matrix::CreateMatrixFromFlags(&argc, &argv, &defaults);
 	if (canvas == NULL) {
 		return 1;
