@@ -4,19 +4,29 @@
 #include <iostream>
 #include <vector>
 
-vector<matCoord> covertCoord(vector <geoCoord> latLong) {
+void getPlaneCoord(vector<matCoord> &planes) {
 	//latitude, longitude
-	matCoord out;
+	
 	int mapWidth = 64;
 	int mapHeight = 32;
-	int latRad = matCoord.x*PI/180;
-	out.x = int((geoCoord.lat + 180)*(mapWidth/360));
-	float temp = log(tan((PI/4)+(latRad/2)));
-	out.y = int((mapHeight/2)-(mapWidth*temp/(2*PI)));
-	return out;
+	vector<geoCoord> latLong;
+	//get coordinates
+	getCoords(latLong);
+	//process and convert
+	//pseduocode for conversion found at: https://stackoverflow.com/questions/14329691/convert-latitude-longitude-point-to-a-pixels-x-y-on-mercator-projection, by Michel Feldheim
+	for (int i = 0; i < latLong.size(); i++) {
+		struct out;
+		//convert
+		out.x = int((latLong[i].lon + 180)*(mapWidth/360));
+		float latRad = latLong[i].lat*PI/180;
+		float temp = log(tan((PI/4)+(latRad/2)));
+		out.y = int((mapHeight/2)-(mapWidth*temp/(2*PI)));
+		//add processed coords to planes vector
+		planes.push_back(out);
+	}
 }
 
-vector<geoCoord> getCoords() {
+void getCoords(vector<geoCoord> &latLong) {
 	ifstream in;
 
 	in.open("out.txt");
