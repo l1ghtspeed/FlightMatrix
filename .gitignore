@@ -1,3 +1,5 @@
 .vscode
 .DS_Store
 ./backend/node_modules
+/backend/ids.txt
+/src/out.txt
