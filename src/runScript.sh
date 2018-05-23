@@ -1,3 +1,3 @@
 #!/bin/bash
-cd /home/pi/FlightMatrix && node backend/app.js &
-/home/pi/FlightMatrix/src/main &
+cd /home/pi/FlightMatrix/backend && node app.js &
+cd /home/pi/FlightMatrix/src && ./main &
