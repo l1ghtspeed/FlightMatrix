@@ -25,9 +25,9 @@ static void InterruptHandler(int signo) {
 static short findSaturation(int latitude){
 //183 to 255
 	int alaska;
-	short zone = latidue%4;
+	short zone = latitude%4;
 
-	if(!(int)(tme.tm_hour/12)(alaska = 183 + (tme.tm_hour%12)*3);
+	if(!(int)(tme.tm_hour/12))alaska = (183 + (tme.tm_hour%12)*3);
 	else alaska = (255 - (tme.tm_hour%12)*3);
 
 	for(int i = 0; i < zone; i++){
@@ -40,16 +40,18 @@ static short findSaturation(int latitude){
 }
 
 static void drawMap(Canvas *canvas) {
-	short sat = 255;
-	short blue[3] = {0,0,sat};
-	short green[3] = {0,sat,0};
+	short blue[3] = {0,0,180};
+	short green[3] = {0,250,0};
 
 	for(int i = 0; i < 32; i++){
-		sat = findSaturation();
-		blue[2] = sat;
-		green[1] = sat;
+	//	sat = findSaturation(i);
+	//	blue[2] = sat;
+	//	green[1] = sat;
 
 		for(int j = 0; j < 64; j++){
+               // sat = findSaturation(j);
+               // blue[2] = sat;
+               // green[1] = sat;
 			if(initMap[i][j] == 1){
 				canvas->SetPixel(j,i,green[0],green[1],green[2]);
 			}else{
@@ -118,7 +120,7 @@ static void drawAirports(Canvas *canvas,vector<matCoord> &airports){
 }
 
 static void addAirports(vector<matCoord> &airports){
-	matCoord mat;
+/*	matCoord mat;
 	mat.x = 8;mat.y = 13;airports.push_back(mat);
 	mat.x = 14;mat.y = 11;airports.push_back(mat);
 	mat.x = 55;mat.y = 13;airports.push_back(mat);
@@ -129,6 +131,7 @@ static void addAirports(vector<matCoord> &airports){
 	mat.x = 39;mat.y = 15;airports.push_back(mat);
 	mat.x = 44;mat.y = 15;airports.push_back(mat);
 	mat.x = 15;mat.y = 13;airports.push_back(mat);
+*/
 }
 
 int main(int argc, char *argv[]) {
@@ -150,10 +153,10 @@ int main(int argc, char *argv[]) {
 	signal(SIGINT, InterruptHandler);
 
 	while(!interrupt_received){
-		previousRefresh = toRefresh;
 		drawMap(canvas);
 		drawTime(canvas);
 		getPlaneCoord(planes);
+		drawPlanes(canvas,planes);
 		usleep(60000000);
 	}
 	
