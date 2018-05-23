@@ -110,6 +110,27 @@ static void addAirports(vector<matCoord> &airports){
 	mat.x = 54;mat.y = 15;airports.push_back(mat);
 }
 
+static void drawAirports(Canvas *canvas,vector<matCoord> &airports){
+	short numAirports = airports.size();
+	for(int i = 0; i < numAirports; i++){
+		canvas->SetPixel(airports.at(i).x,airports.at(i).y,0,0,0);
+	}
+}
+
+static void addAirports(vector<matCoord> &airports){
+	matCoord mat;
+	mat.x = 47;mat.y = 9;airports.push_back(mat);
+	mat.x = 52;mat.y = 8;airports.push_back(mat);
+	mat.x = 32;mat.y = 5;airports.push_back(mat);
+	mat.x = 47;mat.y = 7;airports.push_back(mat);
+	mat.x = 56;mat.y = 9;airports.push_back(mat);
+	mat.x = 53;mat.y = 9;airports.push_back(mat);
+	mat.x = 32;mat.y = 5;airports.push_back(mat);
+	mat.x = 49;mat.y = 9;airports.push_back(mat);
+	mat.x = 33;mat.y = 5;airports.push_back(mat);
+	mat.x = 52;mat.y = 11;airports.push_back(mat);
+}
+
 int main(int argc, char *argv[]) {
 	RGBMatrix::Options defaults;
 	vector<matCoord> airports;
