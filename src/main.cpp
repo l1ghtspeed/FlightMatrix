@@ -30,7 +30,7 @@ static void drawMap(Canvas *canvas) {
 	}
 }
 
-static void drawPlanes(Canvas *canvas,vector<matCoord> planes){
+static void drawPlanes(Canvas *canvas,vector<matCoord> &planes){
 	short numPlanes = planes.size();
 	for(int i = 0; i < numPlanes; i++){
 		canvas->SetPixel(planes.at(i).x,planes.at(i).y,255,0,0);
