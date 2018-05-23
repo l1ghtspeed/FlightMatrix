@@ -31,9 +31,12 @@ def parse_html(url):
     f = open("ids.txt","w+")
     for a in parsed_data.select('a'):
         if(verify(a['href'])):
-            print(a['href'][16:len(a['href'])-4])
-            f.write(a['href'][16:len(a['href'])-4]+'\n')
-            
+            if ('%' in a['href']):
+                print(a['href'][16:len(a['href'])-4])
+                f.write(a['href'][16:len(a['href'])-4]+'\n')
+            else:
+                print(a['href'][16:len(a['href'])])
+                f.write(a['href'][16:len(a['href'])]+'\n')
 
 
 
