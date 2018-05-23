@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
 	drawMap(canvas);
 	getPlaneCoord(planes);
 	drawPlanes(canvas, planes);
-	usleep(100000);
+	usleep(1000000);
 	}
 	//clear and delete the canvas if interrupt is sent
 	canvas -> Clear();

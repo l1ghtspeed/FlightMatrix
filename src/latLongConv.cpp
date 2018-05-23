@@ -21,8 +21,7 @@ void getPlaneCoord(vector<matCoord> &planes) {
 	for (int i = 0; i < latLong.size(); i++) {
 		matCoord out;
 		//convert
-		out.x = int((latLong[i].lon + 180)*(mapWidth/360));
-		std::cout << latLong[i].lon << endl;
+		out.x = int((latLong[i].lon + 180.0f)*((float)mapWidth/360));
 		float latRad = latLong[i].lat*3.14/180;
 		float temp = log(tan((3.14/4)+(latRad/2)));
 		out.y = int((mapHeight/2)-(mapWidth*temp/(2*3.14)));
@@ -43,7 +42,7 @@ void getCoords(vector<geoCoord> &latLong) {
 		space = plane.find(" ");
 		//convert strings to floats	
 		cord.lat = atof(plane.substr(0, space).c_str());
-		cord.lat = atof(plane.substr(space + 1).c_str());
+		cord.lon = atof(plane.substr(space + 1).c_str());
 		latLong.push_back(cord);
 	}
 	
