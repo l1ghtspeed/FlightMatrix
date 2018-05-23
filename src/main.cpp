@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <vector>
+#include <time.h>
 
 using rgb_matrix::GPIO;
 using rgb_matrix::RGBMatrix;
@@ -15,8 +16,8 @@ static void InterruptHandler(int signo) {
 }
 
 static void drawMap(Canvas *canvas) {
-	const short blue = {0,0,255};
-	const short green = {0,255,0};
+	const short blue[3] = {0,0,255};
+	const short green[3] = {0,255,0};
 
 	for(int i = 0; i < 32; i++){
 		for(int j = 0; j < 64; j++){
@@ -30,11 +31,18 @@ static void drawMap(Canvas *canvas) {
 	}
 }
 
-static void drawPlanes(Canvas *canvas,vector<matCoord> planes){
+static void drawPlanes(Canvas *canvas,std::vector<matCoord> planes){
 	short numPlanes = planes.size();
 	for(int i = 0; i < numPlanes; i++){
 		canvas->SetPixel(planes.at(i).x,planes.at(i).y,255,0,0);
 	}
+}
+
+static void drawTime(Canvas* canvas){
+	time_t rawtime;
+  	time (&rawtime);
+	
+
 }
 
 int main(int argc, char *argv[]) {
@@ -42,6 +50,7 @@ int main(int argc, char *argv[]) {
 	defaults.hardware_mapping = "adafruit-hat";
 	defaults.rows = 32;
 	defaults.cols = 64;
+	defaults.brightness = 50;
 	defaults.chain_length = 1;
 	defaults.parallel = 1;
 	Canvas *canvas = rgb_matrix::CreateMatrixFromFlags(&argc, &argv, &defaults);
@@ -53,7 +62,10 @@ int main(int argc, char *argv[]) {
 	signal(SIGTERM, InterruptHandler);
 	signal(SIGINT, InterruptHandler);
 
-	drawMap(canvas);
+	while(!interrupt_recieved){
+		drawMap(canvas);
+	}
+	
 	//clear and delete the canvas if interrupt is sent
 	canvas -> Clear();
 	delete canvas;
