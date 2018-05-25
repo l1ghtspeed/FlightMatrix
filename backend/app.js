@@ -1,7 +1,6 @@
 var Client = require('node-rest-client').Client;
 var fs = require('fs');
 
-
 var username = 'danthemanzspam';
 var apiKey = '528d4c43cbd20e404c88329c1ba0e0316c3dd25e';
 var fxmlUrl = 'https://flightxml.flightaware.com/json/FlightXML3/'
