@@ -140,13 +140,57 @@ string getIP(string file_name){
     assert(msg.length());
     
     while((char) msg.at(read) != 32){
-        if((char) msg.at(read) != 46){
-            ipAddress += msg.at(read);
-        }
+        ipAddress += msg.at(read);
         read++;
     }
 
     return ipAddress;
+}
+
+string decToBin(char digit){
+	string binary = "";
+	while(!digit){
+		binary += (char)digit%2;
+		binary /= 2;
+	}
+	return binary;
+}
+
+void drawIP(Canvas * canvas, string ipAddress){
+	short len = ipAddress.length();
+	short start = 0;
+	short ind = 9;
+	string out = "";
+	char digits[6];
+
+	short purple[3] = {128,0,128};
+	short yellow[3] = {255,255,0};
+	short blue[3] = {0,0,255};
+
+	short seperation[7] = {5,4,4,8,4,4,5}
+
+	if(ipAddress.substr(0,8) != "192.168."){
+		for(int i = 0; i<64; i++){
+			canvas->SetPixel(i,0,purple[0],purple[1],purple[2]);
+		}
+	}else{
+		
+		for (int i = 0; i<13; i++){
+			if(!i%2){ 
+				for(int j = start; j < (int)(seperation/2); j++){
+					canvas->SetPixel(j,0,blue[0],blue[1],blue[2]);
+				}
+				start += seperation[i];
+			}else{
+				out = decToBin(ipAddress.at(ind));
+				for(int j = start; j < start + 5; j++){
+					canvas->SetPixel(j,0,blue[0],blue[1],blue[2]);
+				}
+				start += 5;
+			}
+		}
+	}
+
 }
 
 
@@ -160,7 +204,9 @@ int main(int argc, char *argv[]) {
 	defaults.chain_length = 1;
 	defaults.parallel = 1;
 	defaults.brightness=40;
+
 	Canvas *canvas = rgb_matrix::CreateMatrixFromFlags(&argc, &argv, &defaults);
+	
 	if (canvas == NULL) {
 		return 1;
 	}
@@ -168,7 +214,7 @@ int main(int argc, char *argv[]) {
 	signal(SIGTERM, InterruptHandler);
 	signal(SIGINT, InterruptHandler);
 
-        time_t t;
+    time_t t;
 
 	while(!interrupt_received){
 	        t = time(NULL);
