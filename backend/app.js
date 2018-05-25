@@ -3,7 +3,7 @@ var fs = require('fs');
 
 
 var username = 'danthemanzspam';
-var apiKey = '291f22ec397138d6d12a82e268e974d719a673a9';
+var apiKey = '528d4c43cbd20e404c88329c1ba0e0316c3dd25e';
 var fxmlUrl = 'https://flightxml.flightaware.com/json/FlightXML3/'
 
 var client_options = {
@@ -28,7 +28,6 @@ async function updateCoords(arr){
             //restriction due to five calls a minute
             await sleep(65000);
             let newOutput = await gft(arr[i]);
-            console.log('blarg');
             console.log(typeof newOutput.GetFlightTrackResult);
             if (typeof newOutput.GetFlightTrackResult != 'undefined'){
                 coordset[i] = [JSON.stringify(newOutput.GetFlightTrackResult.tracks[newOutput.GetFlightTrackResult.tracks.length-1].longitude),
@@ -86,6 +85,6 @@ setInterval(function(){
         var idArray = data.split('\n');
         updateCoords(idArray)
     }
-)}, 300000);
+)}, 1800000);
 
 
