@@ -8,8 +8,6 @@
 #include <cassert>
 #include <unistd.h>
 #include "stdlib.h"
-#include <string>
-#include <fstream>
 
 using namespace std;
 using rgb_matrix::GPIO;
@@ -129,27 +127,6 @@ static void addAirports(vector<matCoord> &airports){
 */
 }
 
-string getIP(string file_name){
-    ifstream f;
-    f.open(file_name);
-    string msg;
-    short read = 5;
-    string ipAddress = "";
-
-    getline(f,msg);
-    assert(msg.length());
-    
-    while((char) msg.at(read) != 32){
-        if((char) msg.at(read) != 46){
-            ipAddress += msg.at(read);
-        }
-        read++;
-    }
-
-    return ipAddress;
-}
-
-
 int main(int argc, char *argv[]) {
 	RGBMatrix::Options defaults;
 	vector<matCoord> airports, planes;
@@ -173,9 +150,9 @@ int main(int argc, char *argv[]) {
 	while(!interrupt_received){
 	        t = time(NULL);
 	        struct tm tme = *localtime(&t);
-		
+
 		if(!tme.tm_hour%12){ //check for IP Address change
-		  system("ifconfig en0 | grep 'inet 1' >> /root/pi/FlightMatrix/src/ip.txt");
+		  system("ifconfig wlan0 >> /root/pi/FlightMatrix/src/ip.txt");
 		  drawIP(getIP("ip.txt"));
 		}
 
