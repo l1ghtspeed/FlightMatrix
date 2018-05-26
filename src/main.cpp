@@ -147,44 +147,61 @@ string getIP(string file_name){
     return ipAddress;
 }
 
-string decToBin(char digit){
+string decToBin(int digit){
+	if(digit == 0)return "00000";
 	string binary = "";
-	while(!digit){
-		binary += (char)digit%2;
-		binary /= 2;
+
+	while(digit > 0){
+	    binary += to_string((digit%2));
+		digit /= 2;
 	}
+
+	reverse(binary.begin(),binary.end());
+	binary = "0000" + binary;
+	binary = binary.substr(binary.length()-5);
+
 	return binary;
 }
 
-void drawIP(Canvas * canvas, string ipAddress){
-	short len = ipAddress.length();
-	short start = 0;
-	short ind = 9;
-	string out = "";
-	char digits[6];
 
+void drawIP(Canvas *canvas,string ipAddress){
 	short purple[3] = {128,0,128};
 	short yellow[3] = {255,255,0};
 	short blue[3] = {0,0,255};
 
-	short seperation[7] = {5,4,4,8,4,4,5}
-
 	if(ipAddress.substr(0,8) != "192.168."){
 		for(int i = 0; i<64; i++){
-			canvas->SetPixel(i,0,purple[0],purple[1],purple[2]);
+			canvas->SetPixel(i,0,blue[0],blue[1],blue[2]);
 		}
 	}else{
+		ipAddress = ipAddress.substr(8);
+		short start = ipAddress.find(".");
+		short ind = 0;
+		int seperation[7] = {5,4,4,8,4,4,5};
+		string bin = "";
+
+		string num = "00" + ipAddress.substr(0,start);
+		string num2 = "00" + ipAddress.substr(start+1);
+		num = num.substr(num.length()-3) + num2.substr(num2.length()-3);
+
+		start = 0;
 		
 		for (int i = 0; i<13; i++){
-			if(!i%2){ 
-				for(int j = start; j < (int)(seperation/2); j++){
+			if(i%2 == 0){ //draw spacers
+				for(int j = start; j < start + seperation[(int)(i/2)]; j++){
 					canvas->SetPixel(j,0,blue[0],blue[1],blue[2]);
 				}
 				start += seperation[i];
-			}else{
-				out = decToBin(ipAddress.at(ind));
+			}else{ //draw ip digits
+				bin = decToBin((int)num.at(ind)-48);
+				ind++;
+				
 				for(int j = start; j < start + 5; j++){
-					canvas->SetPixel(j,0,blue[0],blue[1],blue[2]);
+					if(bin.at(j-start) == '0'){
+						canvas->SetPixel(j,0,yellow[0],yellow[1],yellow[2]);
+					}else{
+						canvas->SetPixel(j,0,purple[0],purple[1],purple[2]);
+					}	
 				}
 				start += 5;
 			}
@@ -192,7 +209,6 @@ void drawIP(Canvas * canvas, string ipAddress){
 	}
 
 }
-
 
 int main(int argc, char *argv[]) {
 	RGBMatrix::Options defaults;
@@ -217,12 +233,11 @@ int main(int argc, char *argv[]) {
     time_t t;
 
 	while(!interrupt_received){
-	        t = time(NULL);
-	        struct tm tme = *localtime(&t);
+	    t = time(NULL);
+	    struct tm tme = *localtime(&t);
 		
 		if(!tme.tm_hour%12){ //check for IP Address change
 		  system("ifconfig en0 | grep 'inet 1' >> /root/pi/FlightMatrix/src/ip.txt");
-		  drawIP(getIP("ip.txt"));
 		}
 
 		drawMap(canvas);
@@ -230,6 +245,7 @@ int main(int argc, char *argv[]) {
 		getPlaneCoord(planes);
 		drawPlanes(canvas,planes);
 		planes.clear();
+		drawIP(canvas,getIP("ip.txt"));
 		usleep(60000000);
 	}
 	
