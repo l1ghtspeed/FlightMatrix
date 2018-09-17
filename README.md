@@ -1,6 +1,6 @@
 # FlightMatrix
 LED Matrix Simulating Real-Time Boeing 787 Flights - Made for WindRiver Innovation Day
-![Alt text](/Pictures/innovation day 8.png?raw=true)
+![Alt text](/Pictures/innovationday8.jpg?raw=true)
 ### APIs
 
 FlightAware's FlightXML version 3.0; see https://flightaware.com/commercial/flightxml/v3/apiref.rvt for documentation and API reference. This project specifically used the GetFlightTrack call to get the lastest longitude and latitude for a single specified by plane ID.
